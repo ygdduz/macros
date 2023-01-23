@@ -29,7 +29,12 @@ Sub CombineSheetsToActiveWorkbook()
     Next ws
     ' Close the target Excel file
     targetWB.Close
-    ' Delete the columns 23,24,25,26,27 in the active worksheet
+    ' Unmerge all cells in the active worksheet
+    With ThisWorkbook.Sheets(1)
+        .Range("A1:Z" & .Cells(.Rows.Count, 1).End(xlUp).Row).UnMerge
+    End With
+    
+    ' Check for errors in the active worksheet and replace them with 0
     With ThisWorkbook.Sheets(1)
     For i = 1 To .UsedRange.Rows.Count
         If i <> 1 Then
@@ -42,7 +47,7 @@ Sub CombineSheetsToActiveWorkbook()
     Next i
 End With
 
-    
+    ' Delete the columns 23,24,25,26,27 in the active worksheet
     On Error Resume Next
     ThisWorkbook.Sheets(1).Columns(23).Delete
     ThisWorkbook.Sheets(1).Columns(24).Delete
